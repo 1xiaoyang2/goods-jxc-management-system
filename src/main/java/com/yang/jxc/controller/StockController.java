@@ -65,8 +65,7 @@ public class StockController {
     public CommonResult<CommonPage<Stock>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Stock> menuList = stockService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(menuList));
+        return CommonResult.success(stockService.list(keyword, pageSize, pageNum));
     }
 
     /**

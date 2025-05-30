@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.*;
@@ -12,6 +13,7 @@ import com.yang.jxc.mapper.*;
 import com.yang.jxc.service.DepositoryInService;
 import com.yang.jxc.service.PurchaseService;
 import com.yang.jxc.utils.CalculationUtil;
+import com.yang.jxc.utils.CommonPage;
 import com.yang.jxc.utils.UUidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -82,12 +84,13 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<Purchase> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Purchase> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Purchase> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Purchase::getPurchaseUser, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Purchase::getPurchaseUser, keyword);
         wrapper.eq(Purchase::getIsDestroy, 0);
         IPage<Purchase> page = new Page<>(pageNum, pageSize);
-        return purchaseMapper.selectList(page, wrapper);
+        IPage<Purchase> purchaseIPage = purchaseMapper.selectPage(page, wrapper);
+        return CommonPage.<Purchase>builder().list(purchaseIPage.getRecords()).total(purchaseIPage.getTotal()).build();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 import com.yang.jxc.domain.dto.StockUpDTO;
 import com.yang.jxc.domain.entity.Stock;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public interface StockService {
     /**
      * 分页获取库存列表
      */
-    List<Stock> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Stock> list(String keyword, Integer pageSize, Integer pageNum);
 
     int addOrUpdateStock(Stock stock);
 

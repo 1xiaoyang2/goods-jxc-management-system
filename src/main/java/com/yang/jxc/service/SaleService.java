@@ -3,6 +3,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Sale;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public interface SaleService {
     /**
      * 分页获取客户列表
      */
-    List<Sale> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Sale> list(String keyword, Integer pageSize, Integer pageNum);
 
     int addOrUpdate(Sale sale);
 

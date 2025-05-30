@@ -3,12 +3,14 @@ package com.yang.jxc.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.Customer;
 import com.yang.jxc.domain.entity.Dept;
 import com.yang.jxc.mapper.CustomerMapper;
 import com.yang.jxc.service.CustomerService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,16 +47,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> list() {
-        return customerMapper.selectList(new LambdaQueryWrapper<>());
-    }
-
-    @Override
-    public List<Customer> list(String keyword, Integer pageNum, Integer pageSize) {
+    public CommonPage<Customer> list(String keyword, Integer pageNum, Integer pageSize) {
         LambdaQueryWrapper<Customer> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Customer::getName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Customer::getName, keyword);
         IPage<Customer> page = new Page<>(pageNum, pageSize);
-        return customerMapper.selectList(page, wrapper);
+        IPage<Customer> customerIPage = customerMapper.selectPage(page, wrapper);
+        return CommonPage.<Customer>builder().list(customerIPage.getRecords()).total(customerIPage.getTotal()).build();
     }
 
     /**

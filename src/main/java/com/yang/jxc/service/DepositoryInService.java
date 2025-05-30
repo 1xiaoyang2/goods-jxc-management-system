@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.DepositoryIn;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface DepositoryInService {
     /**
      * 分页获取入库清单列表
      */
-    List<DepositoryIn> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<DepositoryIn> list(String keyword, Integer pageSize, Integer pageNum);
 
 
     boolean checkDepositoryInId(Long depositoryInId);

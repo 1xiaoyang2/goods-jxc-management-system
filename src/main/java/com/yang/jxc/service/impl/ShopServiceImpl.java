@@ -2,12 +2,14 @@ package com.yang.jxc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang.jxc.domain.entity.Shop;
 import com.yang.jxc.domain.entity.ShopType;
 import com.yang.jxc.mapper.ShopMapper;
 import com.yang.jxc.mapper.ShopTypeMapper;
 import com.yang.jxc.service.ShopService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,11 +76,12 @@ public class ShopServiceImpl implements ShopService {
 */
 
     @Override
-    public List<Shop> list(String keyword, Integer pageNum, Integer pageSize) {
+    public CommonPage<Shop> list(String keyword, Integer pageNum, Integer pageSize) {
         LambdaQueryWrapper<Shop> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Shop::getName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Shop::getName, keyword);
         IPage<Shop> page = new Page<>(pageNum, pageSize);
-        return shopMapper.selectList(page, wrapper);
+        IPage<Shop> shopIPage = shopMapper.selectPage(page, wrapper);
+        return CommonPage.<Shop>builder().list(shopIPage.getRecords()).total(shopIPage.getTotal()).build();
     }
 
     @Override

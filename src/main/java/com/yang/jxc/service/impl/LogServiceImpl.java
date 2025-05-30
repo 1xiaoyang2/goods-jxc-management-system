@@ -2,10 +2,12 @@ package com.yang.jxc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang.jxc.domain.entity.Log;
 import com.yang.jxc.mapper.LogMapper;
 import com.yang.jxc.service.LogService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +28,11 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public List<Log> getList(String keyword ,Integer pageSize,Integer pageNum) {
+    public CommonPage<Log> getList(String keyword , Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Log> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Log::getName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Log::getName, keyword);
         IPage<Log> page = new Page<>(pageNum, pageSize);
-        return logMapper.selectList(page, wrapper);
+        IPage<Log> logIPage = logMapper.selectPage(page, wrapper);
+        return CommonPage.<Log>builder().list(logIPage.getRecords()).total(logIPage.getTotal()).build();
     }
 }

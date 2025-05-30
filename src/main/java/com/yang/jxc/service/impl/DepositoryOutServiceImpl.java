@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang.jxc.domain.entity.DepositoryOut;
 import com.yang.jxc.domain.entity.PurchaseExit;
@@ -13,6 +14,7 @@ import com.yang.jxc.mapper.DepositoryOutMapper;
 import com.yang.jxc.mapper.PurchaseExitMapper;
 import com.yang.jxc.mapper.StockMapper;
 import com.yang.jxc.service.DepositoryOutService;
+import com.yang.jxc.utils.CommonPage;
 import com.yang.jxc.utils.UUidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,11 +86,12 @@ public class DepositoryOutServiceImpl implements DepositoryOutService {
     }
 
     @Override
-    public List<DepositoryOut> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<DepositoryOut> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<DepositoryOut> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(DepositoryOut::getShopName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), DepositoryOut::getShopName, keyword);
         IPage<DepositoryOut> page = new Page<>(pageNum, pageSize);
-        return depositoryOutMapper.selectList(page, wrapper);
+        IPage<DepositoryOut> depositoryOutIPage = depositoryOutMapper.selectPage(page, wrapper);
+        return CommonPage.<DepositoryOut>builder().list(depositoryOutIPage.getRecords()).total(depositoryOutIPage.getTotal()).build();
     }
 
     @Override

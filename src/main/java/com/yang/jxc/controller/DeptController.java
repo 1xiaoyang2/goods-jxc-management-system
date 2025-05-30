@@ -59,8 +59,7 @@ public class DeptController {
     public CommonResult<CommonPage<Dept>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Dept> deptList = deptService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(deptList));
+        return CommonResult.success(deptService.list(keyword, pageSize, pageNum));
     }
 
     @ApiOperation("修改部门状态")

@@ -39,7 +39,6 @@ public class BaseInfoDeptController {
     public CommonResult<CommonPage<Dept>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Dept> customerList = deptService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(customerList));
+        return CommonResult.success(deptService.list(keyword, pageSize, pageNum));
     }
 }

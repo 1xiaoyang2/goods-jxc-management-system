@@ -31,17 +31,6 @@ public class DepositoryOutController {
         return CommonResult.failed();
     }
 
-//    @ApiOperation("修改仓库-add合并")
-//    @RequestMapping(value = "/update/")
-//    @ResponseBody
-//    public CommonResult update(  @RequestBody DepositoryOut DepositoryOut) {
-//        int count = depositoryOutService.update( DepositoryOut);
-//        if (count > 0) {
-//            return CommonResult.success(count);
-//        }
-//        return CommonResult.failed();
-//    }
-
     @ApiOperation("删除仓库清单")
     @PostMapping(value = "/delete")
     public CommonResult<Integer> delete(Long id) {
@@ -64,8 +53,7 @@ public class DepositoryOutController {
     public CommonResult<CommonPage<DepositoryOut>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                         @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                         @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<DepositoryOut> outList = depositoryOutService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(outList));
+        return CommonResult.success(depositoryOutService.list(keyword, pageSize, pageNum));
     }
 
     @ApiOperation("修改仓库状态")

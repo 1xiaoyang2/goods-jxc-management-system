@@ -3,6 +3,7 @@ package com.yang.jxc.service;
 
 import com.yang.jxc.domain.entity.Shop;
 import com.yang.jxc.domain.entity.ShopType;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public interface ShopService {
     /**
      * 分页获取客户列表
      */
-    List<Shop> list(String keyword, Integer pageNum, Integer pageSize);
+    CommonPage<Shop> list(String keyword, Integer pageNum, Integer pageSize);
 
 
     /**

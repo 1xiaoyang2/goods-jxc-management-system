@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Customer;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -29,14 +30,9 @@ public interface CustomerService {
     int delete(long id);
 
     /**
-     * 获取所有客户
-     */
-    List<Customer> list();
-
-    /**
      * 分页获取客户列表
      */
-    List<Customer> list(String keyword, Integer pageNum, Integer pageSize);
+    CommonPage<Customer> list(String keyword, Integer pageNum, Integer pageSize);
 
 
     List<Map<String, String>> getIDAndCustomerName();

@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Dept;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface DeptService {
     /**
      * 分页获取部门列表
      */
-    List<Dept> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Dept> list(String keyword, Integer pageSize, Integer pageNum);
 
     /**
      * 验证部门是否存在

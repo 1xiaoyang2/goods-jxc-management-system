@@ -3,6 +3,7 @@ package com.yang.jxc.service;
 
 import com.yang.jxc.domain.dto.StockUpDTO;
 import com.yang.jxc.domain.entity.Depository;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public interface DepositoryService {
     /**
      * 分页获取仓库列表
      */
-    List<Depository> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Depository> list(String keyword, Integer pageSize, Integer pageNum);
 
 
     boolean checkUserName(String name);

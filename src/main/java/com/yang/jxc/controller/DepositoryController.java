@@ -64,8 +64,7 @@ public class DepositoryController {
     public CommonResult<CommonPage<Depository>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Depository> menuList = depositoryService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(menuList));
+        return CommonResult.success(depositoryService.list(keyword, pageSize, pageNum));
     }
 
     @ApiOperation(value = "仓库是否存在", notes = "校验仓库名称")

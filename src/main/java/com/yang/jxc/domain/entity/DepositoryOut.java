@@ -1,5 +1,8 @@
 package com.yang.jxc.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -8,8 +11,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@TableName("depository_out")
 public class DepositoryOut implements Serializable {
+    private static final long serialVersionUID = 13849537495734L;
+
     @ApiModelProperty(value = "出库id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty(value = "来源 id")

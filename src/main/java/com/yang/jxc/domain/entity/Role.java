@@ -1,5 +1,8 @@
 package com.yang.jxc.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -7,8 +10,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@TableName("role")
 public class Role implements Serializable {
+    private static final long serialVersionUID = 182934729347893L;
+
     @ApiModelProperty(value = "角色ID")
+    @TableId(value = "role_id", type = IdType.AUTO)
     private Long roleId;
 
     @ApiModelProperty(value = "角色名称")
@@ -37,6 +44,4 @@ public class Role implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
-
-    private static final long serialVersionUID = 1L;
 }

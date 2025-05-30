@@ -56,8 +56,7 @@ public class DepositoryInController {
     public CommonResult<CommonPage<DepositoryIn>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<DepositoryIn> menuList = depositoryInService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(menuList));
+        return CommonResult.success(depositoryInService.list(keyword, pageSize, pageNum));
     }
 
 

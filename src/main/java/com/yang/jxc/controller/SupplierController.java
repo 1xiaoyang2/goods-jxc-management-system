@@ -58,8 +58,7 @@ public class SupplierController {
     public CommonResult<CommonPage<Supplier>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Supplier> supplierList = supplierService.list(keyword, pageNum, pageSize);
-        return CommonResult.success(CommonPage.restPage(supplierList));
+        return CommonResult.success(supplierService.list(keyword, pageNum, pageSize));
     }
 
 

@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.dto.StockUpDTO;
@@ -11,6 +12,7 @@ import com.yang.jxc.domain.entity.Depository;
 import com.yang.jxc.domain.entity.Note;
 import com.yang.jxc.mapper.DepositoryMapper;
 import com.yang.jxc.service.DepositoryService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -56,11 +58,12 @@ public class DepositoryServiceImpl implements DepositoryService {
     }
 
     @Override
-    public List<Depository> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Depository> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Depository> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Depository::getName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Depository::getName, keyword);
         IPage<Depository> page = new Page<>(pageNum, pageSize);
-        return depositoryMapper.selectList(page, wrapper);
+        IPage<Depository> depositoryIPage = depositoryMapper.selectPage(page, wrapper);
+        return CommonPage.<Depository>builder().list(depositoryIPage.getRecords()).total(depositoryIPage.getTotal()).build();
     }
 
     @Override

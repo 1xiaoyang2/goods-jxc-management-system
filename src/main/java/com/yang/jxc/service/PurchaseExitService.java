@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.PurchaseExit;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface PurchaseExitService {
     /**
      * 分页获取客户列表
      */
-    List<PurchaseExit> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<PurchaseExit> list(String keyword, Integer pageSize, Integer pageNum);
 
     int addOrUpdate(PurchaseExit purchaseExit);
 }

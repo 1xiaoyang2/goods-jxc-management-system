@@ -3,6 +3,7 @@ package com.yang.jxc.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.*;
@@ -12,6 +13,7 @@ import com.yang.jxc.mapper.SaleMapper;
 import com.yang.jxc.mapper.StockMapper;
 import com.yang.jxc.service.DepositoryOutService;
 import com.yang.jxc.service.SaleService;
+import com.yang.jxc.utils.CommonPage;
 import com.yang.jxc.utils.UUidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,11 +81,12 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<Sale> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Sale> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Sale> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Sale::getSaleUser, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Sale::getSaleUser, keyword);
         IPage<Sale> page = new Page<>(pageNum, pageSize);
-        return saleMapper.selectList(page, wrapper);
+        IPage<Sale> saleIPage = saleMapper.selectPage(page, wrapper);
+        return CommonPage.<Sale>builder().list(saleIPage.getRecords()).total(saleIPage.getTotal()).build();
     }
 
     @Override

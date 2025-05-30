@@ -2,10 +2,12 @@ package com.yang.jxc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang.jxc.domain.entity.PurchaseExit;
 import com.yang.jxc.mapper.PurchaseExitMapper;
 import com.yang.jxc.service.PurchaseExitService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,11 +52,12 @@ public class PurchaseExitServiceImpl implements PurchaseExitService {
     }
 
     @Override
-    public List<PurchaseExit> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<PurchaseExit> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<PurchaseExit> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(PurchaseExit::getNumber, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), PurchaseExit::getNumber, keyword);
         IPage<PurchaseExit> page = new Page<>(pageNum, pageSize);
-        return purchaseExitMapper.selectList(page, wrapper);
+        IPage<PurchaseExit> purchaseExitIPage = purchaseExitMapper.selectPage(page, wrapper);
+        return CommonPage.<PurchaseExit>builder().list(purchaseExitIPage.getRecords()).total(purchaseExitIPage.getTotal()).build();
     }
 
     @Override

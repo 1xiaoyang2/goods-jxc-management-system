@@ -69,8 +69,7 @@ public class ShopController {
     public CommonResult<CommonPage<Shop>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Shop> shopList = shopService.list(keyword, pageNum, pageSize);
-        return CommonResult.success(CommonPage.restPage(shopList));
+        return CommonResult.success(shopService.list(keyword, pageNum, pageSize));
     }
 
     //获取 getShopNameAll  id和 商品名称

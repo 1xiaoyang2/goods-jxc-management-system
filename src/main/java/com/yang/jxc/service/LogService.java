@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Log;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ import java.util.List;
 public interface LogService {
     void save(Log sysLog);
 
-    List<Log> getList(String keyword,Integer pageSize, Integer pageNum);
+    CommonPage<Log> getList(String keyword, Integer pageSize, Integer pageNum);
 }

@@ -78,8 +78,7 @@ public class NoteController {
     public CommonResult<CommonPage<Note>> listByName(@RequestParam(value = "keyword", required = false) String keyword,
                                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Note> noteList = noteService.listByName(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(noteList));
+        return CommonResult.success(noteService.listByName(keyword, pageSize, pageNum));
     }
 
     @ApiOperation("删除笔记")

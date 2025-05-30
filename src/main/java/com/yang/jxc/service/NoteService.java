@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Note;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface NoteService {
     /**
      * 分页获取所有笔记列表-------只能获取自己的
      */
-    List<Note> listByName(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Note> listByName(String keyword, Integer pageSize, Integer pageNum);
 
     /**
      * 创建新笔记

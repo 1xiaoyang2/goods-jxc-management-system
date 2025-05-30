@@ -76,8 +76,7 @@ public class MenuController {
     public CommonResult<CommonPage<Menu>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Menu> menuList = menuService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(menuList));
+        return CommonResult.success(menuService.list(keyword, pageSize, pageNum));
     }
 
     //通过角色获取菜单

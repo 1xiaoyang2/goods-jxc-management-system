@@ -3,6 +3,7 @@ package com.yang.jxc.service;
 import com.yang.jxc.domain.dto.RoleMenuRelationDTO;
 import com.yang.jxc.domain.entity.Menu;
 import com.yang.jxc.domain.entity.Role;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public interface RoleService {
      * 分页获取角色列表
      */
 
-    List<Role> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Role> list(String keyword, Integer pageSize, Integer pageNum);
 
     /**
      * 根据管理员ID获取对应菜单

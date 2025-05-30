@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.dto.ShopAndSaleAndStockAndPurchaseDTO;
@@ -17,6 +18,7 @@ import com.yang.jxc.mapper.SaleMapper;
 import com.yang.jxc.mapper.StockMapper;
 import com.yang.jxc.service.StockService;
 import com.yang.jxc.utils.CalculationUtil;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +69,12 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<Stock> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Stock> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Stock> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Stock::getShop, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Stock::getShop, keyword);
         IPage<Stock> page = new Page<>(pageNum, pageSize);
-        return stockMapper.selectList(page, wrapper);
+        IPage<Stock> stockIPage = stockMapper.selectPage(page, wrapper);
+        return CommonPage.<Stock>builder().list(stockIPage.getRecords()).total(stockIPage.getTotal()).build();
     }
 
     @Override

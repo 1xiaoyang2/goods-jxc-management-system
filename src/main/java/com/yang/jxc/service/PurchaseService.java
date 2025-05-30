@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Purchase;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public interface PurchaseService {
     /**
      * 分页获取客户列表
      */
-    List<Purchase> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Purchase> list(String keyword, Integer pageSize, Integer pageNum);
 
     int addOrUpdate(Purchase purchase);
 

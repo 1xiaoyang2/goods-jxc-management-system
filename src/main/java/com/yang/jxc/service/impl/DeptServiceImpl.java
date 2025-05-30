@@ -2,12 +2,14 @@ package com.yang.jxc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang.jxc.annotation.SystemLog;
 import com.yang.jxc.constant.AopLogConstant;
 import com.yang.jxc.domain.entity.Dept;
 import com.yang.jxc.mapper.DeptMapper;
 import com.yang.jxc.service.DeptService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,11 +64,12 @@ public class DeptServiceImpl implements DeptService {
 
     @SystemLog(AopLogConstant.XTMD_3)
     @Override
-    public List<Dept> list(String keyword, Integer pageSize, Integer pageNum) {
-        LambdaQueryWrapper<Dept> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Dept::getDeptName, keyword);
+    public CommonPage<Dept> list(String keyword, Integer pageSize, Integer pageNum) {
         IPage<Dept> page = new Page<>(pageNum, pageSize);
-        return deptMapper.selectList(page, wrapper);
+        LambdaQueryWrapper<Dept> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(keyword), Dept::getDeptName, keyword);
+        IPage<Dept> deptIPage = deptMapper.selectPage(page, wrapper);
+        return CommonPage.<Dept>builder().list(deptIPage.getRecords()).total(deptIPage.getTotal()).build();
     }
 
     @SystemLog(AopLogConstant.XTMD_3)

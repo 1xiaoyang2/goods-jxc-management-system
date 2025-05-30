@@ -65,7 +65,6 @@ public class SaleExitController {
     public CommonResult<CommonPage<SaleExit>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<SaleExit> saleList = saleExitService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(saleList));
+        return CommonResult.success(saleExitService.list(keyword, pageSize, pageNum));
     }
 }

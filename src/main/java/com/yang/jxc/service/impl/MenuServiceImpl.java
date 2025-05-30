@@ -4,6 +4,7 @@ package com.yang.jxc.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.dto.ShowMenu;
@@ -11,6 +12,7 @@ import com.yang.jxc.domain.entity.Menu;
 import com.yang.jxc.domain.entity.Supplier;
 import com.yang.jxc.mapper.MenuMapper;
 import com.yang.jxc.service.MenuService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -55,11 +57,12 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Menu> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Menu::getName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Menu::getName, keyword);
         IPage<Menu> page = new Page<>(pageNum, pageSize);
-        return menuMapper.selectList(page, wrapper);
+        IPage<Menu> menuIPage = menuMapper.selectPage(page, wrapper);
+        return CommonPage.<Menu>builder().list(menuIPage.getRecords()).total(menuIPage.getTotal()).build();
     }
 
     /**

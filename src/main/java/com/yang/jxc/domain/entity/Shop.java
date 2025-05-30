@@ -1,5 +1,8 @@
 package com.yang.jxc.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -8,8 +11,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@TableName("shop")
 public class Shop implements Serializable {
+    private static final long serialVersionUID = 182934729347893L;
+
     @ApiModelProperty(value = "id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty(value = "商品名")
@@ -35,6 +42,4 @@ public class Shop implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
-
-    private static final long serialVersionUID = 1L;
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.annotation.SystemLog;
@@ -17,6 +18,7 @@ import com.yang.jxc.mapper.RoleMapper;
 import com.yang.jxc.mapper.RoleMenuRelationMapper;
 import com.yang.jxc.service.MenuService;
 import com.yang.jxc.service.RoleService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -102,11 +104,12 @@ public class RoleServiceImpl implements RoleService {
 
     @SystemLog(AopLogConstant.XTMD_2)
     @Override
-    public List<Role> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Role> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Role::getRoleName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Role::getRoleName, keyword);
         IPage<Role> page = new Page<>(pageNum, pageSize);
-        return roleMapper.selectList(page, wrapper);
+        IPage<Role> roleIPage = roleMapper.selectPage(page, wrapper);
+        return CommonPage.<Role>builder().list(roleIPage.getRecords()).total(roleIPage.getTotal()).build();
     }
 
     @SystemLog(AopLogConstant.XTMD_2)

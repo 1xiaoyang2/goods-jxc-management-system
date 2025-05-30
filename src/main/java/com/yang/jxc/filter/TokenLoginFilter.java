@@ -43,13 +43,9 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         // 前后端分离的项目中我们提交的数据是JSON字符串。不是表单提交的
         try {
             String loginInfo = getRequestJSON(request);
-            System.out.println("filter---获取请求对象：" + loginInfo);
             Admin = JSON.parseObject(loginInfo, Admin.class);  //转换对象
-            System.out.println("filter---转换后的对象：" + Admin + "|\n" + JSON.toJSONString(Admin));
-            System.out.println("filter---验证是否成功转换-" + Admin.getUserName());
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(Admin.getUserName(), Admin.getPassword());
-            System.out.println("token:" + authenticationToken);
             return authenticationManager.authenticate(authenticationToken);
         } catch (IOException e) {
             e.printStackTrace();

@@ -56,8 +56,7 @@ public class AdminController {
     public CommonResult<CommonPage<Admin>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Admin> adminList = adminService.getAdminList(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(adminList));
+        return CommonResult.success(adminService.getAdminList(keyword, pageSize, pageNum));
     }
 
 
@@ -82,7 +81,7 @@ public class AdminController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("-登陆时密码校验")
+    @ApiOperation("修改密码，密码校验")
     @PostMapping("/checkPassword")
     public CommonResult<String> checkPassword(@RequestBody UpdateAdminPasswordParam updateCheck) {
         boolean flag = adminService.checkPassword(updateCheck.getUsername(), updateCheck.getOldPassword());

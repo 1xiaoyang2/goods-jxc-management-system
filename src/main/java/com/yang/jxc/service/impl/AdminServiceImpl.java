@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +21,7 @@ import com.yang.jxc.mapper.AdminMapper;
 import com.yang.jxc.mapper.AdminRoleRelationMapper;
 import com.yang.jxc.service.AdminService;
 import com.yang.jxc.service.RoleService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -193,11 +195,12 @@ public class AdminServiceImpl implements AdminService {
      */
     @SystemLog(AopLogConstant.XTMD_1)
     @Override
-    public List<Admin> getAdminList(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Admin> getAdminList(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<Admin> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Admin::getUserName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Admin::getUserName, keyword);
         IPage<Admin> page = new Page<>(pageNum, pageSize);
-        return adminMapper.selectList(page, wrapper);
+        IPage<Admin> adminIPage = adminMapper.selectPage(page, wrapper);
+        return CommonPage.<Admin>builder().list(adminIPage.getRecords()).total(adminIPage.getTotal()).build();
     }
 
     /**

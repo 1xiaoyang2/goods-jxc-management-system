@@ -3,6 +3,7 @@ package com.yang.jxc.service;
 import com.yang.jxc.domain.dto.AdminRoleRelationDTO;
 import com.yang.jxc.domain.dto.UpdateAdminPasswordParam;
 import com.yang.jxc.domain.entity.Admin;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public interface AdminService{
      * @param pageNum
      * @return
      */
-    List<Admin> getAdminList(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Admin> getAdminList(String keyword, Integer pageSize, Integer pageNum);
 
     boolean checkUserName(String userName);
 

@@ -3,6 +3,7 @@ package com.yang.jxc.service;
 
 import com.yang.jxc.domain.dto.ShowMenu;
 import com.yang.jxc.domain.entity.Menu;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public interface MenuService {
     /**
      * 分页获取角色列表
      */
-    List<Menu> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<Menu> list(String keyword, Integer pageSize, Integer pageNum);
 
     /**
      * 查询父菜单信息

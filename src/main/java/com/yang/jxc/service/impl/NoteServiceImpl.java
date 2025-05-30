@@ -2,12 +2,14 @@ package com.yang.jxc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.Log;
 import com.yang.jxc.domain.entity.Note;
 import com.yang.jxc.mapper.NoteMapper;
 import com.yang.jxc.service.NoteService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,14 +44,15 @@ public class NoteServiceImpl implements NoteService {
 
     //查询 分页获取当前用户的笔记
     @Override
-    public List<Note> listByName(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<Note> listByName(String keyword, Integer pageSize, Integer pageNum) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String username = token.getPrincipal().toString();
         LambdaQueryWrapper<Note> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Note::getTitle, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Note::getTitle, keyword);
         wrapper.eq(Note::getUserName, username);
         IPage<Note> page = new Page<>(pageNum, pageSize);
-        return noteMapper.selectList(page, wrapper);
+        IPage<Note> noteIPage = noteMapper.selectPage(page, wrapper);
+        return CommonPage.<Note>builder().list(noteIPage.getRecords()).total(noteIPage.getTotal()).build();
     }
 
     @Override

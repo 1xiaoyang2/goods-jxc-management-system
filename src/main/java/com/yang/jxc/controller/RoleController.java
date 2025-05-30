@@ -78,8 +78,7 @@ public class RoleController {
     public CommonResult<CommonPage<Role>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Role> roleList = roleService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(roleList));
+        return CommonResult.success(roleService.list(keyword, pageSize, pageNum));
     }
 
     @ApiOperation("修改角色状态")

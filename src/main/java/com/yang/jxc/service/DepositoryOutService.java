@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.DepositoryOut;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface DepositoryOutService {
     /**
      * 分页获取出库清单列表
      */
-    List<DepositoryOut> list(String keyword, Integer pageSize, Integer pageNum);
+    CommonPage<DepositoryOut> list(String keyword, Integer pageSize, Integer pageNum);
 
 
     int addOrUpdateDepositoryOut(DepositoryOut DepositoryOut);

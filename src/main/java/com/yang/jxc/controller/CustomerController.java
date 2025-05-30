@@ -53,22 +53,12 @@ public class CustomerController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("获取所有客户")
-    @GetMapping(value = "/listAll")
-    public CommonResult<List<Customer>> listAll() {
-        List<Customer> customerList = customerService.list();
-
-        return CommonResult.success(customerList);
-    }
-
     @ApiOperation("根据客户姓名或 地区获取客户")
     @GetMapping(value = "/listByName")
     public CommonResult<CommonPage<Customer>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
-        List<Customer> customerList = customerService.list(keyword, pageNum, pageSize);
-        System.out.println("前端传递的分页内容：" + "查询参数：" + keyword + "\t" + "当前页码：" + pageNum + "\t" + "每页条数" + pageSize);
-        return CommonResult.success(CommonPage.restPage(customerList));
+        return CommonResult.success(customerService.list(keyword, pageNum, pageSize));
     }
 
     /**

@@ -2,6 +2,7 @@ package com.yang.jxc.service;
 
 
 import com.yang.jxc.domain.entity.Supplier;
+import com.yang.jxc.utils.CommonPage;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public interface SupplierService {
     /**
      * 分页获取客户列表
      */
-    List<Supplier> list(String keyword, Integer pageNum, Integer pageSize);
+    CommonPage<Supplier> list(String keyword, Integer pageNum, Integer pageSize);
 
     List<Map<String, String>> getNameAndAddress();
 }

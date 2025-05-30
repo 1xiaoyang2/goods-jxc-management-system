@@ -8,7 +8,6 @@ import com.yang.jxc.utils.ResultCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -67,8 +66,7 @@ public class SaleController {
     public CommonResult<CommonPage<Sale>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        List<Sale> saleList = saleService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(saleList));
+        return CommonResult.success(saleService.list(keyword, pageSize, pageNum));
     }
 
     @ApiOperation("获取销售编号和销售客户")

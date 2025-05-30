@@ -3,12 +3,14 @@ package com.yang.jxc.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.Customer;
 import com.yang.jxc.domain.entity.DepositoryIn;
 import com.yang.jxc.mapper.DepositoryInMapper;
 import com.yang.jxc.service.DepositoryInService;
+import com.yang.jxc.utils.CommonPage;
 import com.yang.jxc.utils.UUidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,11 +73,12 @@ public class DepositoryInServiceImpl implements DepositoryInService {
     }
 
     @Override
-    public List<DepositoryIn> list(String keyword, Integer pageSize, Integer pageNum) {
+    public CommonPage<DepositoryIn> list(String keyword, Integer pageSize, Integer pageNum) {
         LambdaQueryWrapper<DepositoryIn> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(DepositoryIn::getShopName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), DepositoryIn::getShopName, keyword);
         IPage<DepositoryIn> page = new Page<>(pageNum, pageSize);
-        return depositoryInMapper.selectList(page, wrapper);
+        IPage<DepositoryIn> depositoryInIPage = depositoryInMapper.selectPage(page, wrapper);
+        return CommonPage.<DepositoryIn>builder().list(depositoryInIPage.getRecords()).total(depositoryInIPage.getTotal()).build();
     }
 
     @Override

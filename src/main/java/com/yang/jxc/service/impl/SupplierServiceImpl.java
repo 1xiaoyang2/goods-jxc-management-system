@@ -2,10 +2,12 @@ package com.yang.jxc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yang.jxc.domain.entity.Supplier;
 import com.yang.jxc.mapper.SupplierMapper;
 import com.yang.jxc.service.SupplierService;
+import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,11 +63,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> list(String keyword, Integer pageNum, Integer pageSize) {
+    public CommonPage<Supplier> list(String keyword, Integer pageNum, Integer pageSize) {
         LambdaQueryWrapper<Supplier> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Supplier::getSupplierName, keyword);
+        wrapper.like(StringUtils.isNotBlank(keyword), Supplier::getSupplierName, keyword);
         IPage<Supplier> page = new Page<>(pageNum, pageSize);
-        return supplierMapper.selectList(page, wrapper);
+        IPage<Supplier> supplierIPage = supplierMapper.selectPage(page, wrapper);
+        return CommonPage.<Supplier>builder().list(supplierIPage.getRecords()).total(supplierIPage.getTotal()).build();
     }
 
     @Override
