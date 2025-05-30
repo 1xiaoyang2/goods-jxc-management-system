@@ -1,0 +1,24 @@
+#生产环境
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://117.72.39.254:13306/goods-jxc-management-system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: lby12225
+
+    druid:
+      initial-size: 5 #连接池初始化大小
+      min-idle: 10 #最小空闲连接数
+      max-active: 20 #最大连接数
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" #不统计这些请求数据
+
+#设置端口
+#配置端口以及tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /
+  port: 8086
+

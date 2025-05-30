@@ -1,0 +1,26 @@
+#设置
+spring:
+  application:
+    name: goods-jxc-management-system
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+#全局配置
+mybatis:
+  mapper-locations:
+    - classpath*:/mapper/*.xml
+  # spring boot集成mybatis的方式打印sql
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true  #驼峰命名法
+#MyBatis使用pageHelper分页
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true

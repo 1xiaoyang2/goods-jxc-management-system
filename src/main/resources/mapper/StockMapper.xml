@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.jxc.mapper.StockMapper">
+
+
+  <select id="getNumberToShopAndStockAndPurchase"  resultType="com.yang.jxc.domain.dto.ShopAndSaleAndStockAndPurchaseDTO">
+      SELECT s1.shop shopName, SUM(s1.num) saleNumber, s2.stock_quantity StockNumber, p.pq PurchaseNumber
+      FROM sale AS s1
+               LEFT JOIN
+               (SELECT shop, SUM(quantity) AS stock_quantity FROM stock GROUP BY shop) AS s2
+               ON s1.shop = s2.shop
+               LEFT JOIN (SELECT shop, SUM(quantity) AS pq FROM purchase GROUP BY shop) AS p ON s1.shop = p.shop
+      GROUP BY s1.shop LIMIT 0,5
+  </select>
+</mapper>
