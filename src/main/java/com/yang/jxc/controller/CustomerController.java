@@ -22,20 +22,10 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @ApiOperation("添加客户")
-    @PostMapping("/add")
-    public CommonResult<Integer> create(@RequestBody Customer customer) {
-        int count = customerService.create(customer);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
-    }
-
-    @ApiOperation("修改客户")
-    @PostMapping("/update")
-    public CommonResult<Integer> update(@RequestBody Customer customer) {
-        int count = customerService.update(customer);
+    @ApiOperation("添加或修改客户")
+    @PostMapping("/addOrUpdate")
+    public CommonResult<Integer> createOrUpdate(@RequestBody Customer customer) {
+        int count = customerService.createOrUpdate(customer);
         if (count > 0) {
             return CommonResult.success(count);
         }

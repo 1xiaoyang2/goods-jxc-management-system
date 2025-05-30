@@ -1,13 +1,10 @@
 package com.yang.jxc.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.Customer;
-import com.yang.jxc.domain.entity.Dept;
 import com.yang.jxc.mapper.CustomerMapper;
 import com.yang.jxc.service.CustomerService;
 import com.yang.jxc.utils.CommonPage;
@@ -31,14 +28,14 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public int create(Customer customer) {
-        customer.setBuildDate(LocalDateTime.now());
-        return customerMapper.insert(customer);
-    }
-
-    @Override
-    public int update(Customer customer) {
-        return customerMapper.updateById(customer);
+    public int createOrUpdate(Customer customer) {
+        Customer selectCustomer = customerMapper.selectById(customer.getId());
+        customer.setUpdateTime(LocalDateTime.now());
+        if (selectCustomer != null) {
+            return customerMapper.updateById(customer);
+        }else {
+            return customerMapper.insert(customer);
+        }
     }
 
     @Override

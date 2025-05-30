@@ -15,14 +15,9 @@ import java.util.Map;
 public interface CustomerService {
 
     /**
-     * 添加客户
+     * 添加或修改客户
      */
-    int create(Customer customer);
-
-    /**
-     * 修改客户信息
-     */
-    int update(Customer customer);
+    int createOrUpdate(Customer customer);
 
     /**
      * 批量删除客户
