@@ -56,24 +56,6 @@ public class PurchaseServiceImpl implements PurchaseService {
     private DepositoryOutMapper depositoryOutMapper;  //出库清单
 
     @Override
-    public int create(Purchase purchase) {
-        purchase.setNumber(UUidUtils.uuid().toString());  //采购编号
-        purchase.setTime(LocalDateTime.now());
-        long TotalPrice = 120L;  //不同属性的乘积问题
-        purchase.setTotalPrice(BigDecimal.valueOf(TotalPrice));
-        purchase.setIsDestroy(0);
-        if (purchase.getStatus() == null) {
-            purchase.setStatus(1); //状态默认进行中
-        }
-        return purchaseMapper.insert(purchase);
-    }
-
-    @Override
-    public int update(Purchase purchase) {
-        return purchaseMapper.updateById(purchase);
-    }
-
-    @Override
     public int delete(Long id) {
         return purchaseMapper.deleteById(id);
     }
@@ -85,6 +67,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public CommonPage<Purchase> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Purchase> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Purchase::getPurchaseUser, keyword);
         wrapper.eq(Purchase::getIsDestroy, 0);
@@ -105,6 +90,22 @@ public class PurchaseServiceImpl implements PurchaseService {
         }
         return res;
     }
+    public int create(Purchase purchase) {
+        purchase.setNumber(UUidUtils.uuid().toString());  //采购编号
+        purchase.setTime(LocalDateTime.now());
+        // 采购总价
+        BigDecimal totalPrice = purchase.getPrice().multiply(BigDecimal.valueOf(purchase.getQuantity()));
+        purchase.setTotalPrice(totalPrice);
+        purchase.setIsDestroy(0);
+        if (purchase.getStatus() == null) {
+            purchase.setStatus(1); //状态默认进行中
+        }
+        return purchaseMapper.insert(purchase);
+    }
+    public int update(Purchase purchase) {
+        purchase.setTotalPrice(purchase.getPrice().multiply(BigDecimal.valueOf(purchase.getQuantity())));
+        return purchaseMapper.updateById(purchase);
+    }
 
     /**
      * 采购完成后就可以入库了
@@ -115,7 +116,6 @@ public class PurchaseServiceImpl implements PurchaseService {
      */
     @Override
     public int putStock(String depositoryName, Purchase purchase) {
-
         int result = 0;
         //  后端也校验 是否有仓库名
         if (depositoryName == null || purchase.getNumber() == null) {

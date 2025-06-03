@@ -9,8 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RestController
 @Api(tags = "PurchaseExitController", description = "进销管理-采购退货表")
@@ -32,6 +30,7 @@ public class PurchaseExitController {
 
     @ApiOperation("修改记录")
     @PostMapping(value = "/update")
+    @Deprecated
     public CommonResult<Integer> update(@RequestBody PurchaseExit purchaseExit) {
         int count = purchaseExitService.update(purchaseExit);
         if (count > 0) {
@@ -42,6 +41,7 @@ public class PurchaseExitController {
 
     @ApiOperation("删除采购退货单")
     @PostMapping(value = "/delete")
+    @Deprecated
     public CommonResult<Integer> delete(Long id) {
         int count = purchaseExitService.delete(id);
         if (count > 0) {

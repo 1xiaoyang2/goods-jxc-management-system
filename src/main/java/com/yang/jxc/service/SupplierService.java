@@ -8,17 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface SupplierService {
-
-    /**
-     * 添加客户
-     */
-    int create(Supplier supplier);
-
-    /**
-     * 修改客户信息
-     */
-    int update(Supplier supplier);
-
     /**
      * updateOrAddById 判断
      */

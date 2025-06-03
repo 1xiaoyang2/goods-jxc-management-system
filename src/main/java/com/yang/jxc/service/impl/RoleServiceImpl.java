@@ -105,6 +105,9 @@ public class RoleServiceImpl implements RoleService {
     @SystemLog(AopLogConstant.XTMD_2)
     @Override
     public CommonPage<Role> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Role::getRoleName, keyword);
         IPage<Role> page = new Page<>(pageNum, pageSize);

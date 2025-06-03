@@ -58,6 +58,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public CommonPage<Menu> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Menu::getName, keyword);
         IPage<Menu> page = new Page<>(pageNum, pageSize);

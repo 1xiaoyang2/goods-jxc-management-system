@@ -22,24 +22,14 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @ApiOperation("添加采购单")
-    @PostMapping(value = "/add")
+    @ApiOperation("添加或修改采购单")
+    @PostMapping(value = "/addOrUpdate")
     public CommonResult<Integer> create(@RequestBody Purchase purchase) {
         int count = purchaseService.addOrUpdate(purchase);
         if (count > 0) {
             return CommonResult.success(count);
         }
         return CommonResult.success(count);
-    }
-
-    @ApiOperation("修改采购-合并到add")
-    @PostMapping(value = "/update")
-    public CommonResult<Integer> update(@RequestBody Purchase purchase) {
-        int count = purchaseService.update(purchase);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
     }
 
     @ApiOperation(" 删除采购")
@@ -50,13 +40,6 @@ public class PurchaseController {
             return CommonResult.success(count);
         }
         return CommonResult.failed();
-    }
-
-    @ApiOperation("获取所有采购表")
-    @GetMapping(value = "/listAll")
-    public CommonResult<List<Purchase>> listAll() {
-        List<Purchase> customerList = purchaseService.list();
-        return CommonResult.success(customerList);
     }
 
     @ApiOperation("根据采购人 获取 ")

@@ -26,21 +26,6 @@ public class SupplierServiceImpl implements SupplierService {
     @Autowired
     private SupplierMapper supplierMapper;
 
-
-    @Override
-    public int create(Supplier supplier) {
-        supplier.setCreateDate(LocalDateTime.now());
-        // dept.setAdminCount(0);
-        //  role.setSort(0);
-        return supplierMapper.insert(supplier);
-    }
-
-    @Override
-    public int update(Supplier supplier) {
-        supplier.setUpdateTime(LocalDateTime.now());
-        return supplierMapper.updateById(supplier);
-    }
-
     @Override
     public int updateOrAddById(Supplier supplier) {
         if (supplier.getId() != null && supplier.getId() != 0) {//更新
@@ -50,6 +35,18 @@ public class SupplierServiceImpl implements SupplierService {
         }
         //先默认删除/修改 成功
         return 1;
+    }
+
+    public int create(Supplier supplier) {
+        supplier.setCreateDate(LocalDateTime.now());
+        // dept.setAdminCount(0);
+        //  role.setSort(0);
+        return supplierMapper.insert(supplier);
+    }
+
+    public int update(Supplier supplier) {
+        supplier.setUpdateTime(LocalDateTime.now());
+        return supplierMapper.updateById(supplier);
     }
 
     @Override
@@ -64,6 +61,9 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public CommonPage<Supplier> list(String keyword, Integer pageNum, Integer pageSize) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Supplier> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Supplier::getSupplierName, keyword);
         IPage<Supplier> page = new Page<>(pageNum, pageSize);

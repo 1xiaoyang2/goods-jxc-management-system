@@ -83,7 +83,6 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         Map<String, String> map = new HashMap<>();
         //存放信息传给前端
         map.put("username", authResult.getName());   //username唯一的
-        // TODO 还可以存储当前用户具有的角色
         // 生成对应的Token信息
         String token = JWTUtils.getToken(map);
         System.out.println("打印登陆成功生成的token:" + token);

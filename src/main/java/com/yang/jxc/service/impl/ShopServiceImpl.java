@@ -31,21 +31,6 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     private ShopTypeMapper shopTypeMapper;
 
-
-    @Override
-    public int create(Shop shop) {
-        shop.setBuildDate(LocalDateTime.now());
-        // dept.setAdminCount(0);
-        //  role.setSort(0);
-        return shopMapper.insert(shop);
-    }
-
-    @Override
-    public int update(Shop shop) {
-        shop.setUpdateDate(LocalDateTime.now());
-        return shopMapper.updateById(shop);
-    }
-
     @Override
     public int updateOrAddById(Shop shop) {
         if (shop.getId() != null && shop.getId() != 0) {//更新
@@ -55,6 +40,16 @@ public class ShopServiceImpl implements ShopService {
         }
         //先默认删除/修改 成功
         return 1;
+    }
+
+    public int create(Shop shop) {
+        shop.setBuildDate(LocalDateTime.now());
+        return shopMapper.insert(shop);
+    }
+
+    public int update(Shop shop) {
+        shop.setUpdateDate(LocalDateTime.now());
+        return shopMapper.updateById(shop);
     }
 
     @Override
@@ -77,6 +72,9 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public CommonPage<Shop> list(String keyword, Integer pageNum, Integer pageSize) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Shop> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Shop::getName, keyword);
         IPage<Shop> page = new Page<>(pageNum, pageSize);

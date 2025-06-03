@@ -70,6 +70,9 @@ public class SaleExitServiceImpl implements SaleExitService {
 
     @Override
     public CommonPage<SaleExit> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<SaleExit> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), SaleExit::getNumber, keyword);
         IPage<SaleExit> page = new Page<>(pageNum, pageSize);

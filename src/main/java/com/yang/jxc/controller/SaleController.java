@@ -24,8 +24,8 @@ public class SaleController {
     private SaleService saleService;
 
 
-    @ApiOperation("添加 ")
-    @PostMapping(value = "/add")
+    @ApiOperation("添加或修改")
+    @PostMapping(value = "/addOrUpdate")
     public CommonResult<Integer> create(@RequestBody Sale sale) {
         int count = saleService.addOrUpdate(sale);
         if (count > 0) {
@@ -34,17 +34,7 @@ public class SaleController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("修改 ")
-    @PostMapping(value = "/update")
-    public CommonResult<Integer> update(@RequestBody Sale sale) {
-        int count = saleService.update(sale);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
-    }
-
-    @ApiOperation("批量删除 ")
+    @ApiOperation("删除")
     @PostMapping(value = "/delete")
     public CommonResult<Integer> delete(Long id) {
         int count = saleService.delete(id);
@@ -52,13 +42,6 @@ public class SaleController {
             return CommonResult.success(count);
         }
         return CommonResult.failed();
-    }
-
-    @ApiOperation("获取所有 ")
-    @GetMapping(value = "/listAll")
-    public CommonResult<List<Sale>> listAll() {
-        List<Sale> customerList = saleService.list();
-        return CommonResult.success(customerList);
     }
 
     @ApiOperation("根据编号获取")

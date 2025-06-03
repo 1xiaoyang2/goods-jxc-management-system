@@ -196,6 +196,9 @@ public class AdminServiceImpl implements AdminService {
     @SystemLog(AopLogConstant.XTMD_1)
     @Override
     public CommonPage<Admin> getAdminList(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Admin> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Admin::getUserName, keyword);
         IPage<Admin> page = new Page<>(pageNum, pageSize);

@@ -11,7 +11,6 @@ import com.yang.jxc.utils.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * @author :ygy
@@ -29,6 +28,9 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public CommonPage<Log> getList(String keyword , Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Log> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Log::getName, keyword);
         IPage<Log> page = new Page<>(pageNum, pageSize);

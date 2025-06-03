@@ -7,7 +7,6 @@ import com.yang.jxc.utils.CommonPage;
 import com.yang.jxc.utils.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,18 +22,7 @@ public class NoteController {
     @Autowired
     private NoteService noteService;
 
-    @ApiOperation("添加笔记")
-    @PostMapping(value = "/add")
-    public CommonResult<Integer> create(@RequestBody Note note) {
-        int count = noteService.create(note);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
-    }
-
     /**
-     * 问题获取不到前端传递的参数  @RequestParam(value ="title") post与get的问题
      *
      * @param title
      * @return
@@ -57,20 +45,6 @@ public class NoteController {
             return CommonResult.success("成功");
         }
         return CommonResult.failed();
-    }
-
-
-    @ApiOperation("获取当前用户的所有笔记")
-    @GetMapping(value = "/listAll")
-    public CommonResult<List<Note>> listAll() {
-        System.out.println("********************");
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        String userName = (String) token.getPrincipal();
-        System.out.println("笔记-----------------------" + userName);
-        List<Note> noteList = noteService.list(userName);
-
-        Note Note = noteList.get(0);
-        return CommonResult.success(noteList);
     }
 
     @ApiOperation("分页查询笔记")

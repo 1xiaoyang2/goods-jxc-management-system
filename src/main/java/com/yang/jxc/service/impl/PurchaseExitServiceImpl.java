@@ -53,6 +53,9 @@ public class PurchaseExitServiceImpl implements PurchaseExitService {
 
     @Override
     public CommonPage<PurchaseExit> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<PurchaseExit> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), PurchaseExit::getNumber, keyword);
         IPage<PurchaseExit> page = new Page<>(pageNum, pageSize);

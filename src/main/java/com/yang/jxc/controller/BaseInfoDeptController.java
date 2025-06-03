@@ -27,6 +27,7 @@ public class BaseInfoDeptController {
     private DeptService deptService;
 
 
+    // TODO uncheck 4
     @ApiOperation("获取所有部门")
     @GetMapping("/listAll")
     public CommonResult<List<Dept>> listAll() {

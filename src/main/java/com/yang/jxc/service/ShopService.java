@@ -11,16 +11,6 @@ import java.util.Map;
 
 public interface ShopService {
 
-    /**
-     * 添加客户
-     */
-    int create(Shop shop);
-
-    /**
-     * 修改客户信息
-     */
-    int update(Shop shop);
-
 
     /**
      * 判断是添加还是修改

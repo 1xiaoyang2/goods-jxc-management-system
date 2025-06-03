@@ -25,21 +25,10 @@ public class ShopController {
     private ShopService shopService;
 
 
-    @ApiOperation("添加商品")
-    @PostMapping(value = "/add")
+    @ApiOperation("添加或修改商品")
+    @PostMapping(value = "/addOrUpdate")
     public CommonResult<Integer> create(@RequestBody Shop shop) {
         int count = shopService.updateOrAddById(shop);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
-    }
-
-    //---------------
-    @ApiOperation("修改商品")
-    @PostMapping(value = "/update/{id}")
-    public CommonResult<Integer> update(@PathVariable Long id, @RequestBody Shop shop) {
-        int count = shopService.update(shop);
         if (count > 0) {
             return CommonResult.success(count);
         }
@@ -72,6 +61,7 @@ public class ShopController {
         return CommonResult.success(shopService.list(keyword, pageNum, pageSize));
     }
 
+    // TODO encheck 2
     //获取 getShopNameAll  id和 商品名称
     @ApiOperation("获取所有的商品id和名称")
     @GetMapping(value = "/getShopNameAll")
@@ -80,6 +70,7 @@ public class ShopController {
         return CommonResult.success(shopNameAll);
     }
 
+    // TODO uncheck 3
     @ApiOperation("根据商品名称获取商品类型")
     @GetMapping(value = "/getShopTypeByName")
     public CommonResult<ShopType> selectShopTypeByName(String shopName) {

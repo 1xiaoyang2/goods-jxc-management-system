@@ -70,6 +70,9 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public CommonPage<Stock> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Stock> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Stock::getShop, keyword);
         IPage<Stock> page = new Page<>(pageNum, pageSize);

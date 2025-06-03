@@ -65,6 +65,9 @@ public class DeptServiceImpl implements DeptService {
     @SystemLog(AopLogConstant.XTMD_3)
     @Override
     public CommonPage<Dept> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         IPage<Dept> page = new Page<>(pageNum, pageSize);
         LambdaQueryWrapper<Dept> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Dept::getDeptName, keyword);

@@ -21,6 +21,7 @@ public class PdfController {
     @Autowired
     private PurchaseService purchaseService;
 
+    // TODO 该功能后续完善
     @ApiOperation("采购pdf导出")
     @GetMapping(value = "/pdfToPurchase")
     public void pdfCreate(HttpServletResponse response) throws IOException {

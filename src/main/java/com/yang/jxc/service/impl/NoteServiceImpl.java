@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
-import com.yang.jxc.domain.entity.Log;
 import com.yang.jxc.domain.entity.Note;
 import com.yang.jxc.mapper.NoteMapper;
 import com.yang.jxc.service.NoteService;
@@ -16,20 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class NoteServiceImpl implements NoteService {
 
     @Autowired
     private NoteMapper noteMapper;
-
-
-    @Override
-    public int create(Note note) {
-        note.setCreateTime(LocalDateTime.now());
-        return noteMapper.insert(note);
-    }
 
     @Override
     public int update(Note note) {
@@ -45,6 +35,9 @@ public class NoteServiceImpl implements NoteService {
     //查询 分页获取当前用户的笔记
     @Override
     public CommonPage<Note> listByName(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String username = token.getPrincipal().toString();
         LambdaQueryWrapper<Note> wrapper = new LambdaQueryWrapper<>();
@@ -66,18 +59,10 @@ public class NoteServiceImpl implements NoteService {
             return 0;
         }
 
-
         Note note = new Note();
         note.setCreateTime(LocalDateTime.now());
         note.setUserName(username);
         note.setTitle(title);
         return noteMapper.insert(note);
-    }
-
-    @Override
-    public List<Note> list(String userName) {
-        LambdaQueryWrapper<Note> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Note::getUserName, userName);
-        return noteMapper.selectList(wrapper);
     }
 }

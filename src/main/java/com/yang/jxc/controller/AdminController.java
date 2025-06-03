@@ -52,7 +52,7 @@ public class AdminController {
 
 
     @ApiOperation(value = "根据用户名或姓名--分页获取用户列表")
-    @GetMapping("/List")
+    @GetMapping("/list")
     public CommonResult<CommonPage<Admin>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
@@ -141,6 +141,7 @@ public class AdminController {
         }
     }
 
+    // TODO encheck
     @ApiOperation("获取所有的员工信息[id, name]")
     @GetMapping("/adminAll")
     public CommonResult<List<Map<String, Object>>> adminAll() {

@@ -10,11 +10,13 @@ import java.util.List;
  * 笔记 service
  */
 public interface NoteService {
-
     /**
-     * 添加笔记
+     * 创建新笔记
+     *
+     * @param title
+     * @return
      */
-    int create(Note note);
+    int createByTitle(String title);
 
     /**
      * 修改笔记信息
@@ -26,18 +28,8 @@ public interface NoteService {
      */
     int delete(Long id);
 
-    List<Note> list(String userName);
-
     /**
      * 分页获取所有笔记列表-------只能获取自己的
      */
     CommonPage<Note> listByName(String keyword, Integer pageSize, Integer pageNum);
-
-    /**
-     * 创建新笔记
-     *
-     * @param title
-     * @return
-     */
-    int createByTitle(String title);
 }

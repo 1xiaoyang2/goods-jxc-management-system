@@ -8,17 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface PurchaseService {
-
-    /**
-     * 添加客户
-     */
-    int create(Purchase purchase);
-
-    /**
-     * 修改客户信息
-     */
-    int update(Purchase purchase);
-
     /**
      * 批量删除客户
      */

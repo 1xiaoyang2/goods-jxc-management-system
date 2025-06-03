@@ -59,6 +59,9 @@ public class DepositoryServiceImpl implements DepositoryService {
 
     @Override
     public CommonPage<Depository> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Depository> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Depository::getName, keyword);
         IPage<Depository> page = new Page<>(pageNum, pageSize);

@@ -1,11 +1,9 @@
 package com.yang.jxc.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
 import com.yang.jxc.domain.entity.*;
 import com.yang.jxc.mapper.DepositoryOutMapper;
 import com.yang.jxc.mapper.SaleExitMapper;
@@ -49,39 +47,15 @@ public class SaleServiceImpl implements SaleService {
     private StockMapper stockMapper;  //库存清单
 
     @Override
-    public int create(Sale sale) {
-        sale.setTime(LocalDateTime.now());
-        BigDecimal TotalPrice = null;
-        BigDecimal price = sale.getPrice();
-        Long num = sale.getNum();
-        if (price != null && num != null) {
-            BigDecimal bigDecimal = new BigDecimal(num);  //其他类型转BigDecimal需要new来转化
-            TotalPrice = bigDecimal.multiply(price);
-            sale.setTotalPrice(TotalPrice); //计算总价
-        }
-        sale.setStatus(1); //默认进行中
-        sale.setSaleNumber(String.valueOf(UUidUtils.uuid())); //销售编号uuid
-        return saleMapper.insert(sale);
-    }
-
-    @Override
-    public int update(Sale sale) {
-        //传入字段为null不更新数据库字段
-        return saleMapper.updateById(sale);
-    }
-
-    @Override
     public int delete(Long id) {
         return saleMapper.deleteById(id);
     }
 
     @Override
-    public List<Sale> list() {
-        return saleMapper.selectList(new LambdaQueryWrapper<>());
-    }
-
-    @Override
     public CommonPage<Sale> list(String keyword, Integer pageSize, Integer pageNum) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Sale> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Sale::getSaleUser, keyword);
         IPage<Sale> page = new Page<>(pageNum, pageSize);
@@ -100,6 +74,26 @@ public class SaleServiceImpl implements SaleService {
             res = this.create(sale);
         }
         return res;
+    }
+    public int create(Sale sale) {
+        sale.setTime(LocalDateTime.now());
+        BigDecimal totalPrice = null;
+        BigDecimal price = sale.getPrice();
+        Long num = sale.getNum();
+        if (price != null && num != null) {
+            BigDecimal bigDecimal = new BigDecimal(num);  //其他类型转BigDecimal需要new来转化
+            totalPrice = bigDecimal.multiply(price);
+            sale.setTotalPrice(totalPrice); //计算总价
+        }
+        sale.setStatus(1); //默认进行中
+        sale.setSaleNumber(String.valueOf(UUidUtils.uuid())); //销售编号uuid
+        return saleMapper.insert(sale);
+    }
+
+    public int update(Sale sale) {
+        sale.setTotalPrice(sale.getPrice().multiply(BigDecimal.valueOf(sale.getNum())));
+        //传入字段为null不更新数据库字段
+        return saleMapper.updateById(sale);
     }
 
 

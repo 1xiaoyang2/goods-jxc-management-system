@@ -45,6 +45,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CommonPage<Customer> list(String keyword, Integer pageNum, Integer pageSize) {
+        if(keyword != null){
+            keyword = keyword.trim();
+        }
         LambdaQueryWrapper<Customer> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(keyword), Customer::getName, keyword);
         IPage<Customer> page = new Page<>(pageNum, pageSize);

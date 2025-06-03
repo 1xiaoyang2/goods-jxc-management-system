@@ -23,18 +23,8 @@ public class SupplierController {
     private SupplierService supplierService;
 
     @ApiOperation("添加供应商")
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/addOrUpdate")
     public CommonResult<Integer> create(@RequestBody Supplier supplier) {
-        int count = supplierService.updateOrAddById(supplier);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
-    }
-
-    @ApiOperation("修改供应商")
-    @PostMapping(value = "/update")
-    public CommonResult<Integer> update(@RequestBody Supplier supplier) {
         int count = supplierService.updateOrAddById(supplier);
         if (count > 0) {
             return CommonResult.success(count);
@@ -62,6 +52,7 @@ public class SupplierController {
     }
 
 
+    // TODO encheck
     @ApiOperation("获取供应商名和地址")
     @GetMapping(value = "/getNameAndAddress")
     public CommonResult<List<Map<String, String>>> getNameAndAddress() {

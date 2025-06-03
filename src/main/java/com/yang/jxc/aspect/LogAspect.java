@@ -69,7 +69,6 @@ public class LogAspect {
                 .getContext().getAuthentication();
         String username = token.getPrincipal().toString();
         sysLog.setName(username);
-        // TODO 当前登录的用户 和 IP信息
         // 获取当前调用的方法
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
